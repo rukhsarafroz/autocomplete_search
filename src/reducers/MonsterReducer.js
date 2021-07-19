@@ -1,3 +1,4 @@
+import { isEqual, uniqWith } from "lodash";
 import { GET_MONSTERS_FAILURE, GET_MONSTERS_REQUESTING, GET_MONSTERS_SUCCESS } from "../constants/ActionTypes";
 
   const initialState = {
@@ -5,6 +6,7 @@ import { GET_MONSTERS_FAILURE, GET_MONSTERS_REQUESTING, GET_MONSTERS_SUCCESS } f
     getMonstersSuccess: null,
     monstersList: [],
     getMonstersErrors: [],
+    hasMore: false,
     currentPage: 1,
     totalPages: 1
   };
@@ -15,19 +17,20 @@ import { GET_MONSTERS_FAILURE, GET_MONSTERS_REQUESTING, GET_MONSTERS_SUCCESS } f
         return {
           ...state,
           getMonstersRequesting: true,
-          getMonstersSuccess: null,
+          getMonstersSuccess: false,
           projectAreasErrors: null
         };
       case GET_MONSTERS_SUCCESS:
         return {
-          ...state,
-          getMonstersRequesting: null,
-          getMonstersSuccess: true,
-          monstersList: action.data,
-          totalPages: action.totalPages,
-          currentPage: action.currentPage,
-          projectAreasErrors: null
-        };
+            ...state,
+            getMonstersRequesting: false,
+            getMonstersSuccess: true,
+            monstersList: state.monstersList && state.monstersList.length  ? uniqWith([...state.monstersList,...action.data], isEqual) : action.data,
+            hasMore: action.hasMore,
+            currentPage: action.currentPage,
+            totalPages: action.totalPages,
+            projectAreasErrors: null
+          };
       case GET_MONSTERS_FAILURE:
         return {
           ...state,

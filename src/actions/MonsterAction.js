@@ -12,6 +12,7 @@ export const getMonsters = requestParameter => async dispatch => {
           data: data,
           currentPage: requestParameter.page,
           totalPages: apiResponse.response.info.pages,
+          hasMore: apiResponse.response.info.next !== null ? true : false,
           message: "Monsters fetched successfully"
         });
       } else {

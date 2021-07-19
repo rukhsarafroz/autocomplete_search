@@ -29,11 +29,10 @@ const MonsterHomePageComponent = (props) => {
   const classes = useStyles();
   const {
     getMonstersRequesting,
-    getMonstersSuccess,
-    monstersList,
-    getMonstersErrors,
     currentPage,
     totalPages,
+    monstersList,
+    hasMore,
   } = useSelector((state) => state.monsterReducer);
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -46,14 +45,13 @@ const MonsterHomePageComponent = (props) => {
     (type) => {
       dispatch(getMonsters({ page, name: searchQuery, type: type }));
     },
-    [searchQuery],
   )
 
   useEffect(() => {
-    if (page <= totalPages && searchQuery) {
+    if (page <= totalPages && hasMore && searchQuery) {
       searchHandler();
     }
-  }, [page]);
+  }, [page, hasMore, searchQuery, totalPages]);
 
 
   const delayedQuery = useCallback(
@@ -85,7 +83,13 @@ const MonsterHomePageComponent = (props) => {
         />
       </Grid>
       <Grid item xs={12} className={classes.monsterList} style={{display: searchQuery === "" ? "none" : "flex"}}>
-        <MonsterCardListComponent monstersList={monstersList} page={page} setPage={setPage}/>
+        <MonsterCardListComponent
+          monstersList={monstersList}
+          setPage={setPage}
+          getMonstersRequesting={getMonstersRequesting}
+          hasMore={hasMore}
+          totalPages={totalPages}
+          page={page}/>
       </Grid>
     </Grid>
   );
