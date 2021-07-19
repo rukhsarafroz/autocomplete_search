@@ -2,6 +2,7 @@
   "name": "autocomplete_search",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://rukhsarafroz.github.io/autocomplete_search/",
   "dependencies": {
     "@material-ui/core": "^4.12.1",
     "@material-ui/icons": "^4.11.2",
@@ -25,8 +26,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "yarn build",
-    "deploy": "gh-pages -d build"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -b github-pages -d build"
   },
   "eslintConfig": {
     "extends": [
